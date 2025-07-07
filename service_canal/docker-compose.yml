@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Conteneur 1: Base de données MySQL
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    container_name: channels_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_secure123
+      MYSQL_DATABASE: channels_db
+      MYSQL_USER: flask_user
+      MYSQL_PASSWORD: flask_password_secure123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - mysql_logs:/var/log/mysql
+    networks:
+      - channels_network
+    restart: unless-stopped
+
+  # Conteneur 2: Application Flask
+  flask_app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: channels_flask_app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      FLASK_ENV: production
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: channels_db
+      MYSQL_USER: flask_user
+      MYSQL_PASSWORD: flask_password_secure123
+      SECRET_KEY: your-super-secret-jwt-key-change-in-production
+    ports:
+      - "5003:5003"
+    networks:
+      - channels_network
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  mysql_data:
+    driver: local
+  mysql_logs:
+    driver: local
+
+networks:
+  channels_network:
+    driver: bridge
+    name: channels_network
