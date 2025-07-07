@@ -1,7 +1,7 @@
 # microservice_canaux_IRC
 
-## Membres de l'équipe : 
-- Maxime Froissant
-- Guillaume Medard
-- Meryem Mellagui
-- Gabriel Monczewski
+## Objectifs du service
+
+## Instructions de lancement
+
+## Exemple(s) d'appel (avec JWT si besoin)
