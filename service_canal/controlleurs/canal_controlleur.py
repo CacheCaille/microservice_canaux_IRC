@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from repositories import canal_repository
 from repositories import role_repository
-from service_canal.app import db
+from app import db
 import jwt
 import json 
 canal_bp = Blueprint("main", __name__)
@@ -144,15 +144,6 @@ def modify_canal(name):
         return jsonify({'status': "OK", 'reponse': content})
     except Exception as e:
         return jsonify({'status': "KO", 'message': str(e)})
-
-@canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
-def delete_canal(canal_nom):
-    try:
-        canal_repository.del_canal(canal_nom)
-        return jsonify({'status': "OK", 'reponse': "Canal "+ canal_nom + " a ete supprime"})
-    except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
-
 
 @canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
 def delete_canal(canal_nom):

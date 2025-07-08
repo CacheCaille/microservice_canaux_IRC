@@ -1,4 +1,4 @@
-from service_canal.app import db
+from app import db
 
 def get_user_roles(channel_name, user_pseudo):
     """
