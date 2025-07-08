@@ -17,3 +17,15 @@
 - Standardisation des retours des requêtes
 - Initialisation de la partie ORM (quelques petites erreurs)
 - Finalisation du diagramme d'objet
+
+10h
+- Problème sur l'importation de l'objet database, on a tout regrouper dans app.py
+- Problème de commit quelconque
+
+11h 
+
+- Squelette fonctionnel
+- Début codage des routes
+
+11h30
+route d'invitation des utilisateurs
