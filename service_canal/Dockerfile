@@ -29,7 +29,7 @@ RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Exposer le port 5003 (port interne comme demandé)
-EXPOSE 5003
+EXPOSE 5000
 
 # Variables d'environnement par défaut
 ENV FLASK_APP=app.py
@@ -38,4 +38,4 @@ ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
 # Commande par défaut pour démarrer l'application Flask
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5003"]
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]

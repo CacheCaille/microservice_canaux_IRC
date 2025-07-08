@@ -38,12 +38,36 @@ def create_chanel(channel_name):
     raise Exception("Not implemented yet")
 
 @canal_bp.route("/channel/<name>/topic", methods=["POST"])
-def update_canal_topic(channel_name):
-    raise Exception("Not implemented yet")
+def update_canal_topic(name):
+    try:
+        body = request.get_json()
+        topic = body["topic"]
+        content = canal_repository.update_canal_topic(name, topic)
+        return jsonify({'status': "OK", 'reponse': content})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>/mode", methods=["POST"])
-def update_canal_mode(channel_name):
-    raise Exception("Not implemented yet")
+def update_canal_mode(name):
+    try:
+        body = request.get_json()
+        if body.get("mode")[0] == 'r':
+            editable = False
+        elif body.get("mode")[0] == 'w':
+            editable = True
+
+        if body.get("mode")[1] == '+':
+            private = False
+        elif body.get("mode")[1] == '-':
+            private = True
+
+        if editable is None or private is None:
+            raise Exception("Le mode ", body.get["mode"], " n'est pas un mode valide")
+
+        content = canal_repository.update_canal_mode(name, editable, private)
+        return jsonify({'status': "OK", 'reponse': content})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>/invite", methods=["POST"])
 def invite_user_to_canal(channel_name):
@@ -92,8 +116,28 @@ def ban_user_from_channel(channel_name):
         return jsonify({'status': "KO", 'message': "You are not authorized to invite users to this channel"})
 
 @canal_bp.route("/channel/<name>", methods=["PATCH"])
-def modify_chanel(channel_name):
-    raise Exception("Not implemented yet")
+def modify_canal(name):
+    try:
+        body = request.get_json()
+        topic = body["topic"]
+
+        if body.get("mode")[0] == 'r':
+            editable = False
+        elif body.get("mode")[0] == 'w':
+            editable = True
+
+        if body.get("mode")[1] == '+':
+            private = False
+        elif body.get("mode")[1] == '-':
+            private = True
+
+        if editable is None or private is None:
+            raise Exception("Le mode ", body.get["mode"], " n'est pas un mode valide")
+
+        content = canal_repository.update_canal_topic(name, topic, editable, private)
+        return jsonify({'status': "OK", 'reponse': content})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>", methods=["DELETE"])
 def delete_chanel(channel_name):

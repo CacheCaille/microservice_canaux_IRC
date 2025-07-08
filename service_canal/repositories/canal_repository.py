@@ -1,10 +1,19 @@
-from app import Canal , Role
+from app import Canal, Role
 
 def get_canals():
     """
     Retrieve all channels.
     """
     return Canal.query.all()
+
+def update_canal_topic(name, topic):
+    return Canal.query.filter_by(name=name).update({'topic': topic})
+
+def update_canal_mode(name, editable, private):
+    return Canal.query.filter_by(name=name).update({'editable': editable, 'private': private})
+
+def update_canal_topic_and_mode(name, topic, editable, private):
+    return Canal.query.filter_by(name=name).update({'topic': topic, 'editable': editable, 'private': private})
 
 def get_users_by_channel(channel_name):
     """
@@ -43,4 +52,4 @@ def get_channel_config(channel_name):
             for r in roles
         ]
     }
-	
+
