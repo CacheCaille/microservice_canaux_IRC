@@ -14,6 +14,19 @@ def create_app():
 
     return app
 
+class Canal(db.Model):
+    name = db.Column(db.String(100), primary_key=True)
+    topic = db.Column(db.String(255), nullable=False)
+    editable = db.Column(db.Boolean, default=True, nullable=False)
+    private = db.Column(db.Boolean, default=False, nullable=False)
+
+class Role(db.Model):
+
+    fk_user_name = db.Column(db.String(100),nullable=False, primary_key=True)
+    fk_canal_name = db.Column(db.String(255), nullable=False, primary_key=True)
+    role = db.Column(db.String(2), default="w+", nullable=False)
+    banned_reason = db.Column(db.String(255), nullable=True)
+
 if __name__ == "__main__":
     app = create_app()
     app.run(debug=True)

@@ -1,4 +1,4 @@
-from models.canal import Canal
+from app import Canal
 
 def get_canals():
     """
