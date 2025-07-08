@@ -3,13 +3,14 @@ from repositories import canal_repository
 from repositories import role_repository
 from service_canal.app import db
 import jwt
+import json 
 canal_bp = Blueprint("main", __name__)
 
 @canal_bp.route("/channel", methods=["GET"])
 def get_canals():
     try:
         content = canal_repository.get_canals()
-        return jsonify({'status': "OK", 'reponse': content})
+        return jsonify({'status': "OK", 'reponse': str(content)})
     except Exception as e:
         return jsonify({'status': "KO", 'message': str(e)})
 
@@ -34,8 +35,13 @@ def get_canal_top_activity(channel_name):
     raise Exception("Not implemented yet")
 
 @canal_bp.route("/channel", methods=["POST"])
-def create_chanel(channel_name):
-    raise Exception("Not implemented yet")
+def create_canal():
+    try:
+        data = request.get_json()
+        canal_repository.create_canal(data.get("name"),data.get("private"))
+        return jsonify({'status': "OK", 'reponse': data})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>/topic", methods=["POST"])
 def update_canal_topic(name):
@@ -139,6 +145,20 @@ def modify_canal(name):
     except Exception as e:
         return jsonify({'status': "KO", 'message': str(e)})
 
-@canal_bp.route("/channel/<name>", methods=["DELETE"])
-def delete_chanel(channel_name):
-    raise Exception("Not implemented yet")
+@canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
+def delete_canal(canal_nom):
+    try:
+        canal_repository.del_canal(canal_nom)
+        return jsonify({'status': "OK", 'reponse': "Canal "+ canal_nom + " a ete supprime"})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
+
+
+@canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
+def delete_canal(canal_nom):
+    try:
+        canal_repository.del_canal(canal_nom)
+        return jsonify({'status': "OK", 'reponse': "Canal "+ canal_nom + " a ete supprime"})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
+

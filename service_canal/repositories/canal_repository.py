@@ -1,4 +1,5 @@
 from app import Canal, Role
+from app import db
 
 def get_canals():
     """
@@ -53,3 +54,12 @@ def get_channel_config(channel_name):
         ]
     }
 
+def create_canal(nom_canal,private_canal):
+	
+	canal = Canal(name=nom_canal, private=private_canal, topic="")
+	db.session.add(canal)
+	db.session.commit()
+
+def del_canal(nom_canal):
+    Canal.query.filter(Canal.name==nom_canal).delete()
+    db.session.commit()

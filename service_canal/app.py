@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
+import json 
 db = SQLAlchemy()
 
 def create_app():
@@ -19,6 +19,14 @@ class Canal(db.Model):
     topic = db.Column(db.String(255), nullable=False)
     editable = db.Column(db.Boolean, default=True, nullable=False)
     private = db.Column(db.Boolean, default=False, nullable=False)
+    
+    def toJSON(self):
+        return json.dumps(
+            self,
+            default=lambda o: o.__dict__, 
+            sort_keys=True,
+            indent=4)
+
 
 class Role(db.Model):
 
