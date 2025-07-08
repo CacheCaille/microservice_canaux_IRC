@@ -5,7 +5,7 @@ def get_canals():
     """
     Retrieve all channels.
     """
-    return Canal.query.all()
+    return Canal.query.filter(Canal.private=='false').all()
 
 def update_canal_topic(name, topic):
     return Canal.query.filter_by(name=name).update({'topic': topic})
