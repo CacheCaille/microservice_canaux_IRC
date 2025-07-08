@@ -42,7 +42,7 @@ services:
       MYSQL_PASSWORD: flask_password_secure123
       SECRET_KEY: your-super-secret-jwt-key-change-in-production
     ports:
-      - "5003:5003"
+      - "5000:5000"
     networks:
       - channels_network
     restart: unless-stopped
