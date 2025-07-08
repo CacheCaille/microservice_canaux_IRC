@@ -6,7 +6,6 @@
 ```
 cd microservice_canaux_IRC/service_canal
 docker compose build flask_app
-docker compose build mysql
 docker compose up --build
 ```
 ## Exemple(s) d'appel (avec JWT si besoin)
