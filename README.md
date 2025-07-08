@@ -9,7 +9,7 @@ Ce microservice gère les canaux de discussion d’un système de type IRC. Il p
 - Le paramétrage du sujet et des modes de fonctionnement (lecture seule, privé/public)
 - L’interfaçage avec d’autres services via JWT pour l’authentification
 
-## Routes du services
+## Routes du service
 
 Les routes principales sont décrites ci-dessous. La documentation complète (paramètres, réponses, types) est accessible via Swagger à l’URL : http://localhost:5000/apidocs
 
