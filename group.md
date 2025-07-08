@@ -29,3 +29,10 @@
 
 11h30
 route d'invitation des utilisateurs
+
+14h 
+- Correction crash (probleme de merge/rebase)
+
+15h
+- Finition des routes
+
