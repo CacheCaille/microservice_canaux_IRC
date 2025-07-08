@@ -12,23 +12,23 @@ def get_canals():
         content = canal_repository.get_canals()
         return jsonify({'status': "OK", 'reponse': str(content)})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<name>/users", methods=["GET"])
 def get_canal_users(name):
     try:
         users = canal_repository.get_users_by_channel(name)
-        return jsonify({'status': "OK", 'users': users})
+        return jsonify({'status': "OK", 'reponse': users})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<name>/config", methods=["GET"])
 def get_canal_config(name):
     try:
         config = canal_repository.get_channel_config(name)
-        return jsonify({'status': "OK", 'config': config})
+        return jsonify({'status': "OK", 'reponse': config})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/topActivity", methods=["GET"])
 def get_canal_top_activity(channel_name):
@@ -38,25 +38,27 @@ def get_canal_top_activity(channel_name):
 def create_canal():
     try:
         data = request.get_json()
-        canal_repository.create_canal(data.get("name"),data.get("private"))
-        return jsonify({'status': "OK", 'reponse': data})
+        canal = canal_repository.create_canal(data.get("name"),data.get("private"))
+        return jsonify({'status': "OK", 'reponse': str(canal)})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<name>/topic", methods=["POST"])
 def update_canal_topic(name):
     try:
         body = request.get_json()
-        topic = body["topic"]
+        topic = body.get("topic")
         content = canal_repository.update_canal_topic(name, topic)
-        return jsonify({'status': "OK", 'reponse': content})
+        return jsonify({'status': "OK", 'reponse': "Le topic a ete mis a jour"})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<name>/mode", methods=["POST"])
 def update_canal_mode(name):
     try:
         body = request.get_json()
+        editable = None
+        private = None
         if body.get("mode")[0] == 'r':
             editable = False
         elif body.get("mode")[0] == 'w':
@@ -68,12 +70,12 @@ def update_canal_mode(name):
             private = True
 
         if editable is None or private is None:
-            raise Exception("Le mode ", body.get["mode"], " n'est pas un mode valide")
+            raise Exception("Le mode ", body.get("mode"), " n'est pas un mode valide")
 
-        content = canal_repository.update_canal_mode(name, editable, private)
-        return jsonify({'status': "OK", 'reponse': content})
+        canal_repository.update_canal_mode(name, editable, private)
+        return jsonify({'status': "OK", 'reponse': "Le mode a ete mis a jour"})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<name>/invite", methods=["POST"])
 def invite_user_to_canal(channel_name):
@@ -92,9 +94,9 @@ def invite_user_to_canal(channel_name):
         data = request.get_json()
         data.get("pseudo")
         role_repository.insert_user(data.get("pseudo"), channel_name, role="INVITE")
-        return jsonify({'status': "OK", 'message': f"User invited to channel {channel_name}"})
+        return jsonify({'status': "OK", 'reponse': f"User invited to channel {channel_name}"})
     else :
-        return jsonify({'status': "KO", 'message': "You are not authorized to invite users to this channel"})
+        return jsonify({'status': "KO", 'reponse': "You are not authorized to invite users to this channel"})
 
 
 @canal_bp.route("/channel/<name>/ban", methods=["POST"])
@@ -117,9 +119,9 @@ def ban_user_from_channel(channel_name):
         role.banned_reason = data.get("banned_reason", "No reason provided")
         role.role = "BANNED"
         db.session.commit() # ^^ Il faudrait pas avoir ça là mais on a pas le temp de ce coordonnée pour faire un services
-        return jsonify({'status': "OK", 'message': f"User invited to channel {channel_name}"})
+        return jsonify({'status': "OK", 'reponse': f"User invited to channel {channel_name}"})
     else :
-        return jsonify({'status': "KO", 'message': "You are not authorized to invite users to this channel"})
+        return jsonify({'status': "KO", 'reponse': "You are not authorized to invite users to this channel"})
 
 @canal_bp.route("/channel/<name>", methods=["PATCH"])
 def modify_canal(name):
@@ -140,16 +142,16 @@ def modify_canal(name):
         if editable is None or private is None:
             raise Exception("Le mode ", body.get["mode"], " n'est pas un mode valide")
 
-        content = canal_repository.update_canal_topic(name, topic, editable, private)
-        return jsonify({'status': "OK", 'reponse': content})
+        content = canal_repository.update_canal_topic_and_mode(name, topic, editable, private)
+        return jsonify({'status': "OK", 'reponse': "Canal mis a jour"})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
 @canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
 def delete_canal(canal_nom):
     try:
-        canal_repository.del_canal(canal_nom)
-        return jsonify({'status': "OK", 'reponse': "Canal "+ canal_nom + " a ete supprime"})
+        canal = canal_repository.del_canal(canal_nom)
+        return jsonify({'status': "OK", 'reponse': str(canal)})
     except Exception as e:
-        return jsonify({'status': "KO", 'message': str(e)})
+        return jsonify({'status': "KO", 'reponse': str(e)})
 
