@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify
 from flask import request
-from ..repositories.canal_repository import canal_repository
-
+from repositories import canal_repository
 
 canal_bp = Blueprint("main", __name__)
 

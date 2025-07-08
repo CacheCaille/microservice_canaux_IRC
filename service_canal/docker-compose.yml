@@ -18,6 +18,11 @@ services:
     networks:
       - channels_network
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p$${MYSQL_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Conteneur 2: Application Flask
   flask_app:
@@ -25,6 +30,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: channels_flask_app
+    depends_on:
+      mysql:
+        condition: service_healthy
     environment:
       FLASK_ENV: production
       MYSQL_HOST: mysql
