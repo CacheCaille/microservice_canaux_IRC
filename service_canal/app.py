@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import json 
+from flasgger import Swagger
 db = SQLAlchemy()
 
 def create_app():
@@ -11,6 +12,22 @@ def create_app():
         db.create_all()
     from controlleurs.canal_controlleur import canal_bp
     app.register_blueprint(canal_bp)
+    swagger_config = {
+        "headers": [],
+        "specs": [
+            {
+                "endpoint": 'apidoc',
+                "route": '/apidoc',
+                "rule_filter": lambda rule: True,
+                "model_filter": lambda tag: True,
+            }
+        ],
+        "static_url_path": "/flasgger_static",
+        "swagger_ui": True,
+        "specs_route": "/swagger/"
+    }
+
+    swagger = Swagger(app, config=swagger_config)
 
     return app
 
