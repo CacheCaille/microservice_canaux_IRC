@@ -12,12 +12,20 @@ def get_canals():
         return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>/users", methods=["GET"])
-def get_canal_users(channel_name):
-    raise Exception("Not implemented yet")
+def get_canal_users(name):
+    try:
+        users = canal_repository.get_users_by_channel(name)
+        return jsonify({'status': "OK", 'users': users})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/<name>/config", methods=["GET"])
-def get_canal_config(channel_name):
-    raise Exception("Not implemented yet")
+def get_canal_config(name):
+    try:
+        config = canal_repository.get_channel_config(name)
+        return jsonify({'status': "OK", 'config': config})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
 
 @canal_bp.route("/channel/topActivity", methods=["GET"])
 def get_canal_top_activity(channel_name):

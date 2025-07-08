@@ -1,4 +1,4 @@
-from app import Canal
+from app import Canal , Role
 
 def get_canals():
     """
@@ -6,4 +6,41 @@ def get_canals():
     """
     return Canal.query.all()
 
+def get_users_by_channel(channel_name):
+    """
+    Renvoie la liste des utilisateurs d'un canal.
+    """
+    canal = Canal.query.filter_by(nom=channel_name).first()
+    if not canal:
+        raise Exception("Canal non trouvé.")
 
+    roles = Role.query.filter_by(CanalName=channel_name).all()
+    return [
+        {"username": r.UserName, "role": r.Role}
+        for r in roles if r.Role != "banned"
+    ]
+
+def get_channel_config(channel_name):
+    """
+    Renvoie la configuration complète d un canal (topic, mode, private, rôles).
+    """
+    canal = Canal.query.filter_by(nom=channel_name).first()
+    if not canal:
+        raise Exception("Canal non trouvé.")
+
+    roles = Role.query.filter_by(CanalName=channel_name).all()
+
+    return {
+        "nom": canal.nom,
+        "private": canal.Private,
+        "topic": canal.Topic,
+        "roles": [
+            {
+                "username": r.UserName,
+                "role": r.Role,
+                "ban_reason": r.BanedReason
+            }
+            for r in roles
+        ]
+    }
+	
