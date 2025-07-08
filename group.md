@@ -1,4 +1,9 @@
 # RÔLES
+- Maxime : Gestion documentation
+- Meryem : Gestion modèle objet
+- Gabriel : Gestion Github & Docker
+- Guillaume : Gestion ORM 
+
 
 # LOG DU PROJET
 
