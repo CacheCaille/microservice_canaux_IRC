@@ -3,9 +3,7 @@ version: '3.8'
 services:
   # Conteneur 1: Base de données MySQL
   mysql:
-    build:
-      context: .
-      dockerfile: Dockerfile.mysql
+    image: mysql:8.0
     container_name: channels_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_password_secure123
