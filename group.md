@@ -41,3 +41,5 @@ route d'invitation des utilisateurs
 15h
 - Finition des routes
 
+16h
+- Gestion JWT ajouter (les routes fonctionnent sans, mais avec le token... aucune idée)
