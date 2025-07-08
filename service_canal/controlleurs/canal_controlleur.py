@@ -153,3 +153,12 @@ def delete_canal(canal_nom):
     except Exception as e:
         return jsonify({'status': "KO", 'message': str(e)})
 
+
+@canal_bp.route("/channel/<canal_nom>", methods=["DELETE"])
+def delete_canal(canal_nom):
+    try:
+        canal_repository.del_canal(canal_nom)
+        return jsonify({'status': "OK", 'reponse': "Canal "+ canal_nom + " a ete supprime"})
+    except Exception as e:
+        return jsonify({'status': "KO", 'message': str(e)})
+
