@@ -1,16 +1,23 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import json 
+import json
+from flasgger import Swagger
+
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object("config.Config")
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
+
+    Swagger(app)
+
     from controlleurs.canal_controlleur import canal_bp
     app.register_blueprint(canal_bp)
+
+    with app.app_context():
+        db.create_all()
+
     return app
 
 class Canal(db.Model):
@@ -18,11 +25,11 @@ class Canal(db.Model):
     topic = db.Column(db.String(255), nullable=False)
     editable = db.Column(db.Boolean, default=True, nullable=False)
     private = db.Column(db.Boolean, default=False, nullable=False)
-    
+
     def toJSON(self):
         return json.dumps(
             self,
-            default=lambda o: o.__dict__, 
+            default=lambda o: o.__dict__,
             sort_keys=True,
             indent=4)
 

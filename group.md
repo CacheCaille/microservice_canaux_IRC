@@ -27,13 +27,12 @@
 - Problème sur l'importation de l'objet database, on a tout regrouper dans app.py
 - Problème de commit quelconque
 
-11h 
-
+11h
 - Squelette fonctionnel
 - Début codage des routes
 
 11h30
-route d'invitation des utilisateurs
+- route d'invitation des utilisateurs
 
 14h 
 - Correction crash (probleme de merge/rebase)
@@ -43,3 +42,4 @@ route d'invitation des utilisateurs
 
 16h
 - Gestion JWT ajouter (les routes fonctionnent sans, mais avec le token... aucune idée)
+- Finalisation de la doc Swagger
